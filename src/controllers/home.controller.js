@@ -34,10 +34,11 @@ module.exports = {
             })
         }
         if(tags !== null) {
-            let tagsWithTasks = tags.filter(tag => {
+            tagsWithTasks = tags.filter(tag => {
                 if (tagsCount[tag.id] > 0) return tag
             })
         }
+
         res.render("dashboard", {
             title: "Dashboard",
             user: user,
