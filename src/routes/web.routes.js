@@ -30,6 +30,7 @@ module.exports = (router) => {
      * Tasks routes
      */
     router.get('/daily', signInChecker, (req, res) => { res.render('daily', {}) })
+    router.get('/weekly', signInChecker, (req, res) => { res.render('weekly', {}) })
     router.post('/new/task', signInChecker, requestsMiddleware.newTaskValidator, asyncRoute(TaskController.store))
     /**
      * User routes

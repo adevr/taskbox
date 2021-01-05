@@ -297,3 +297,9 @@ input[type="file"]::-webkit-file-upload-button {
     z-index: 15;
     opacity: 0;
 }
+
+.w-14{
+    width: 14%;
+    float: left;
+    display: inline-block;
+}
