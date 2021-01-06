@@ -47,5 +47,52 @@ module.exports = {
             tagsWithTasks: tagsWithTasks,
             tags: tags
         })
+    },
+
+    daily: async (req, res, next) => {
+        let today = new Date().getDay()
+        const user = await User.findOne({
+            where: {
+                email: req.session.email,
+                id: req.session.userId,
+                is_active: 1,
+            },
+            include: {model: Task, where: {dayweek: today, deleted_at: null}, required:false},
+            order: [['Tasks', "status", "DESC"], ['created_at', 'ASC']]
+        })
+
+        let tags = await Tag.findAll()
+        let tagsWithTasks
+        let tagsCount = {}
+
+        if (user.Tasks === null || user.Tasks === undefined || user.Tasks.length === 0) {
+            user.Tasks = null
+            tags = null
+        }else{
+            user.Tasks.forEach(task => {
+                let newtags = [];
+                let tasktags = task.tags.split(",")
+                task.tags = [];
+                for (let i = 0; i < tasktags.length; i++) {
+                    const id = tasktags[i];
+                    newtags[i] = tags.filter(tag => tag.id == id);
+                    (!tagsCount[id]) ? tagsCount[id] = 1 : tagsCount[id]++
+                }
+                task.tags.push(newtags);
+            })
+        }
+        if(tags !== null) {
+            tagsWithTasks = tags.filter(tag => {
+                if (tagsCount[tag.id] > 0) return tag
+            })
+        }
+
+        res.render("daily", {
+            title: "Daily",
+            user: user,
+            tCounter: tagsCount,
+            tagsWithTasks: tagsWithTasks,
+            tags: tags
+        })
     }
 };

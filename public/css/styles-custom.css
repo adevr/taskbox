@@ -303,3 +303,27 @@ input[type="file"]::-webkit-file-upload-button {
     float: left;
     display: inline-block;
 }
+
+.btn-task-changes{
+    background-color: white;
+    border: 0;
+    border-radius: 100%;
+}
+
+.btn-task-changes:hover{
+    background-color: transparent;
+}
+
+.delete{
+    font-size: 15px;
+    line-height: 27px;
+}
+
+.week-day{
+    padding: 10px;
+    margin: 0 20%;
+    background: lightgray;
+    color: white;
+    border-radius: 25px;
+    align-content: center;
+}

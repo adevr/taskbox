@@ -1,5 +1,5 @@
 const TaskController = require("../controllers/task.controller")
-const HomeController = require("../controllers/home.controller")
+const FrontendController = require("../controllers/frontend.controller")
 const UserController = require("../controllers/user.controller")
 const asyncRoute = require("../middleware/async.route")
 const requestsMiddleware = require("../middleware/requests.middleware")
@@ -11,7 +11,7 @@ var upload = multer({
     dest: path.join(__dirname, "../../public/tmp/files")
 });
 module.exports = (router) => {
-    router.get('/', signInChecker, asyncRoute(HomeController.index))
+    router.get('/', signInChecker, asyncRoute(FrontendController.index))
     /**
      * login and register routes
      */
@@ -29,7 +29,7 @@ module.exports = (router) => {
     /***
      * Tasks routes
      */
-    router.get('/daily', signInChecker, (req, res) => { res.render('daily', {}) })
+    router.get('/daily', signInChecker, asyncRoute(FrontendController.daily))
     router.get('/weekly', signInChecker, (req, res) => { res.render('weekly', {}) })
     router.post('/new/task', signInChecker, requestsMiddleware.newTaskValidator, asyncRoute(TaskController.store))
     /**
