@@ -30,17 +30,19 @@ module.exports = (router) => {
      * Tasks routes
      */
     router.get('/daily', signInChecker, asyncRoute(FrontendController.daily))
-    router.get('/weekly', signInChecker, (req, res) => { res.render('weekly', {}) })
+    //router.get('/weekly', signInChecker, (req, res) => { res.render('weekly', {}) })
     router.post('/new/task', signInChecker, requestsMiddleware.newTaskValidator, asyncRoute(TaskController.store))
+    router.post('/update/task/:taskId', signInChecker, asyncRoute(TaskController.update))
+    router.post('/delete/task/:taskId', signInChecker, asyncRoute(TaskController.destroy))
+    router.post('/task/mark/:taskId', signInChecker, asyncRoute(TaskController.markCompleted))
     /**
      * User routes
      */
     router.get('/profile', signInChecker, asyncRoute(UserController.index))
-    router.post('/edit/profile/:userId', upload.single("file"), asyncRoute(UserController.update))
+    router.post('/edit/profile/:userId', upload.single("file"), requestsMiddleware.editProfileValidator, asyncRoute(UserController.update))
 
     router.get('*', (req,res) => {
         res.render("404");
     })
-
 }
 

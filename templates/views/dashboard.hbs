@@ -22,6 +22,7 @@
                         <span style='font-size:50px;'>&#128075;</span>
                     </h1>
                 </div>
+                {{#if user.Tasks}}
                 <div class="row">
                     <div class="col-xl-4 col-md-12">
                         <div class="card shadow mb-4 h-438">
@@ -113,6 +114,9 @@
                         </div>
                     </div>
                 </div>
+                {{else}}
+                    <h4 class="p-5">There is nothing to do today, you can take the entire day to rest!</h4>
+                {{/if}}
             </div>
             <!-- /.container-fluid -->
         </div>

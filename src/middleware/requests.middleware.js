@@ -38,5 +38,18 @@ module.exports = {
             next()
         }
         next()
+    },
+    editProfileValidator: (req, res, next) => {
+        let {fullname, email, password, confirmpassword} = req.body
+
+        if ((fullname == null || fullname === '' || fullname === undefined) || (email == null || email === '' || email === undefined)) {
+            next()
+        }
+
+        if(password !== confirmpassword && password === ""){
+            req.body.password = null
+            next()
+        }
+        next()
     }
 }

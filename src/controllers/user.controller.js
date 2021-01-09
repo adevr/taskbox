@@ -48,9 +48,9 @@ module.exports = {
         const {fullname, email, password} = req.body
 
         const user = await User.findByPk(req.session.userId)
-        user.fullName = fullname;
-        user.email = email;
-        user.pass = password;
+        if(fullname != null || fullname != '') user.fullName = fullname;
+        if(email != null || email != '')   user.email = email;
+        //if(password != null || password != '') user.pass = password;
         await user.save();
 
         if (req.file !== undefined) {
@@ -75,6 +75,9 @@ module.exports = {
                 });
             }
         }
+        res.render("userprofile", {
+            user: user
+        })
     },
 
     forgotPwd: async (req, res, next) => {
