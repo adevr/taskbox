@@ -64,6 +64,7 @@ module.exports = {
                     const user = User.findByPk(req.session.userId).then(user => {
                         user.profilePic = `${dir}${req.file.filename}.png`
                         user.save();
+                        res.redirect("/profile")
                     }).catch(err => {
                         //todo: validade user message
                     })
@@ -75,9 +76,7 @@ module.exports = {
                 });
             }
         }
-        res.render("userprofile", {
-            user: user
-        })
+        res.redirect("/profile")
     },
 
     forgotPwd: async (req, res, next) => {
