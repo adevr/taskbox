@@ -17,31 +17,37 @@ module.exports = {
     },
 
     store: async (req, res, next) => {
-        let {email, picture, fullname, password} = req.body
+        let {email, fullname, password} = req.body
+        console.table({email, fullname, password})
 
-        const [user, created] = await User.findOrCreate({
-            where:
-                {email: email, fullName: fullname, pass: password}
-        })
-
-        if (created) {
-            let confirmationEmail = {
-                from: "no-reply@taskbox.com",
-                to: email,
-                subject: "TASKBOX - REGISTRATION CONFIRMATION",
-                text: `Hello ${fullname}, in order to confirm your registration please click <a href="https://taskbox-web-app.herokuapp.com/activate/${user.id}">here.</a>`,
-            }
-            mailer.sendMail(confirmationEmail, function (error) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log(`Email sent to  - ${email}`);
+        try{
+            const [user, created] = await User.findOrCreate({
+                where:
+                    {email: email, fullName: fullname, pass: password, is_active: 1}
+            })
+            if (created) {
+                let confirmationEmail = {
+                    from: "no-reply@taskbox.com",
+                    to: email,
+                    subject: "TASKBOX - REGISTRATION CONFIRMATION",
+                    text: `Hello ${fullname}, in order to confirm your registration please click <a href="https://taskbox-web-app.herokuapp.com/activate/${user.id}">here.</a>`,
                 }
-            });
-            res.render("register", MESSAGE.USER_REGISTERED_200)
-        } else {
+                mailer.sendMail(confirmationEmail, function (error) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log(`Email sent to  - ${email}`);
+                    }
+                });
+                res.render("register", MESSAGE.USER_REGISTERED_200)
+            } else {
+                res.render("register", ERRORS.USER_REGISTERED)
+            }
+        }catch (e) {
             res.render("register", ERRORS.USER_REGISTERED)
         }
+
+
     },
 
     update: async (req, res, next) => {
